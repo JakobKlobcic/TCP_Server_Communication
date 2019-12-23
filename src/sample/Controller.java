@@ -1,19 +1,16 @@
 package sample;
 
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
+import javafx.concurrent.Task;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -30,16 +27,37 @@ public class Controller implements Initializable {
         System.out.println("Controller.handleButtonClick()");
     }
 
-            //Exception in thread "Thread-5" java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-5
-    //TODO: poglej kako deluje naslednja zadeva--> Platform.runLater()
+
     public static void addListItem(String Item) {
-        if (!Item.equals("")) {
-            itemList.add(Item);
-            System.out.println("Controller.addListItem()");
-            System.out.println("itemList: "+itemList);
-        }
+        Platform.runLater(new Runnable() {
+            public void run() {
+                if (!Item.equals("")) {
+                    itemList.add(Item);
+                    System.out.println("Controller.addListItem()");
+                    System.out.println("itemList: "+itemList);
+                }
+            }
+        });
+
 
     }
+
+/*    public static void addListItem(String Item) {
+        System.out.println("Controller.addListItem()");
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                if (!Item.equals("")) {
+                    itemList.add(Item);
+                    System.out.println("Controller.addListItem()");
+                    System.out.println("itemList: " + itemList);
+                }
+
+                return null;
+            }
+        };
+    }*/
+
 
         //Button click
     public void onServerConnect(MouseEvent mouseEvent) {
