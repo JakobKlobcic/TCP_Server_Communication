@@ -10,7 +10,7 @@ public class ServerWorker extends Thread{
     private final Socket clientSocket;
     private BufferedReader reader;
     private final Server server;
-    private OutputStream outputStream;
+    private static OutputStream outputStream;
 
 
 
@@ -50,11 +50,12 @@ public class ServerWorker extends Thread{
             String line = "";
             System.out.println("before outputStream");
              //TODO:vprašaj urbana o tej vrstici  //outputStream.write(line.getBytes());
+            Controller controller = new Controller();
             while((line = reader.readLine()) != null){
                 result += line;
                 System.out.println("Line: "+line);
-                Controller controller = new Controller();
-                controller.addListItem(line);
+
+                controller.addListItem("C:\n"+line);
 
 
 
@@ -127,11 +128,11 @@ public class ServerWorker extends Thread{
     }
 
 */
-        private void send(String onLineMsg){
+        public static void send(String onLineMsg){
             try {
                 outputStream.write(onLineMsg.getBytes());
                     Controller controller = new Controller();
-                    controller.addListItem(onLineMsg);
+                    controller.addListItem("S:\n"+onLineMsg);
             }catch(IOException e){
                 //notify about message faliour
             }

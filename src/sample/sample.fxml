@@ -17,6 +17,7 @@
                   </Button>
                </children>
             </HBox>
+            <Label prefHeight="18.0" prefWidth="484.0" text="C: -&gt;Clinet     S: -&gt;Server" />
             <ListView fx:id="MessageList" prefHeight="309.0" prefWidth="501.0" />
             <HBox alignment="CENTER" prefHeight="36.0" prefWidth="500.0">
                <children>
@@ -25,7 +26,7 @@
                         <Insets right="10.0" />
                      </padding>
                   </Label>
-                  <TextField fx:id="myMessage" prefHeight="26.0" prefWidth="277.0">
+                  <TextField fx:id="myMessage" onAction="#onEnter" onKeyPressed="#handleButtonClick" prefHeight="26.0" prefWidth="277.0">
                      <padding>
                         <Insets right="10.0" />
                      </padding>
