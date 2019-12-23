@@ -50,12 +50,12 @@ public class ServerWorker extends Thread{
             String line = "";
             System.out.println("before outputStream");
              //TODO:vprašaj urbana o tej vrstici  //outputStream.write(line.getBytes());
-            Controller controller = new Controller();
+
             while((line = reader.readLine()) != null){
                 result += line;
                 System.out.println("Line: "+line);
 
-                controller.addListItem("C:\n"+line);
+                Controller.addListItem("C:\n"+line);
 
 
 
@@ -137,6 +137,7 @@ public class ServerWorker extends Thread{
                 //notify about message faliour
             }
         }
+
 
 }
 

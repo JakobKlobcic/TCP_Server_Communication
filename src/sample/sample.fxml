@@ -26,7 +26,7 @@
                         <Insets right="10.0" />
                      </padding>
                   </Label>
-                  <TextField fx:id="myMessage" onAction="#onEnter" onKeyPressed="#handleButtonClick" prefHeight="26.0" prefWidth="277.0">
+                  <TextField fx:id="myMessage" onAction="#onEnter" prefHeight="26.0" prefWidth="277.0">
                      <padding>
                         <Insets right="10.0" />
                      </padding>
