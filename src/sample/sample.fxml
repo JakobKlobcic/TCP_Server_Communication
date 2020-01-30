@@ -15,7 +15,6 @@
                         <Insets left="20.0" />
                      </HBox.margin>
                   </Button>
-                  <TextField fx:id="IpTextField" />
                   <TextField fx:id="PortNumberTextField" />
                </children>
                <VBox.margin>

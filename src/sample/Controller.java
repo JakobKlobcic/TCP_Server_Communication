@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
     public TextField myMessage;
     public ListView MessageList;
-    public TextField IpTextField;
+
     public TextField PortNumberTextField;
     static ObservableList<String> itemList;
 
@@ -34,9 +34,6 @@ public class Controller implements Initializable {
         itemList= FXCollections.observableArrayList();
 
         MessageList.setItems(itemList);
-
-        IpTextField.setPromptText("IP"); //to set the hint text
-        IpTextField.getParent().requestFocus();
 
         PortNumberTextField.setPromptText("Port"); //to set the hint text
         PortNumberTextField.getParent().requestFocus();
