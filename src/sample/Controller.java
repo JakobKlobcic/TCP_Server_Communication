@@ -2,6 +2,8 @@ package sample;
 
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -22,7 +24,40 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
     public TextField myMessage;
     public ListView MessageList;
+    public TextField IpTextField;
+    public TextField PortNumberTextField;
     static ObservableList<String> itemList;
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        itemList= FXCollections.observableArrayList();
+
+        MessageList.setItems(itemList);
+
+        IpTextField.setPromptText("IP"); //to set the hint text
+        IpTextField.getParent().requestFocus();
+
+        PortNumberTextField.setPromptText("Port"); //to set the hint text
+        PortNumberTextField.getParent().requestFocus();
+        PortNumberTextField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue,
+                                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    PortNumberTextField.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+            }
+        });
+
+        System.out.println("Controller.initialize()");
+
+    }
+
+/*    String IPtext="";
+    public void handleIpButtonClick(){
+
+    }*/
 
 
 
@@ -33,6 +68,7 @@ public class Controller implements Initializable {
         myMessage.setText("");
         ServerWorker.send(message);
         System.out.println("Controller.handleButtonClick()");
+
     }
 
 
@@ -51,18 +87,12 @@ public class Controller implements Initializable {
 
         //Button click
     public void onServerConnect(MouseEvent mouseEvent) {
-        Server server = new Server(2001);
+        Server server = new Server(Integer.parseInt(PortNumberTextField.getText()));
         server.start();
         System.out.println("Controller.onServerConnect()");
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        itemList= FXCollections.observableArrayList();
-        MessageList.setItems(itemList);
-        System.out.println("Controller.initialize()");
 
-    }
     //ko v TextField pritisnem na Enter
     @FXML
     public void onEnter(ActionEvent ae){

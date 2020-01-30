@@ -3,7 +3,7 @@ package sample;
 import java.io.*;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.List;
+
 
 public class ServerWorker extends Thread{
 
@@ -44,7 +44,6 @@ public class ServerWorker extends Thread{
             InputStream inputStream = clientSocket.getInputStream();
             this.outputStream = clientSocket.getOutputStream();
             reader = new BufferedReader(new InputStreamReader(inputStream));
-           // send("Sporočilo 123");
             String result ="";
 
             String line = "";
@@ -54,11 +53,8 @@ public class ServerWorker extends Thread{
             while((line = reader.readLine()) != null){
                 result += line;
                 System.out.println("Line: "+line);
-
-                Controller.addListItem("C:\n"+line);
-
-
-
+                //"C:\n" v ListView doda oznako da je sporočilo od clienta
+                controller.addListItem("C:\n"+line);
             }
 
            // controller.addListItem(result);
@@ -130,11 +126,12 @@ public class ServerWorker extends Thread{
 */
         public static void send(String onLineMsg){
             try {
+                //byte[] b = string.getBytes();   Spremeni text v byte
                 outputStream.write(onLineMsg.getBytes());
                     Controller controller = new Controller();
                     controller.addListItem("S:\n"+onLineMsg);
             }catch(IOException e){
-                //notify about message faliour
+                System.out.println("ServerWorker.send(); Error: "+e);
             }
         }
 

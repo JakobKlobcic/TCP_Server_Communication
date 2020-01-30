@@ -8,14 +8,19 @@
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="500.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
                   <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onServerConnect" text="Connect Server">
                      <HBox.margin>
                         <Insets left="20.0" />
                      </HBox.margin>
                   </Button>
+                  <TextField fx:id="IpTextField" />
+                  <TextField fx:id="PortNumberTextField" />
                </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </HBox>
             <Label prefHeight="18.0" prefWidth="484.0" text="C: -&gt;Clinet     S: -&gt;Server" />
             <ListView fx:id="MessageList" prefHeight="309.0" prefWidth="501.0" />
