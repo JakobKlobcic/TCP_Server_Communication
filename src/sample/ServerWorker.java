@@ -17,6 +17,7 @@ public class ServerWorker extends Thread{
     private static OutputStream outputStream;
     public static String longText = "";
     int longTextCount = 1;
+    private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
 
 
 
@@ -61,7 +62,19 @@ public class ServerWorker extends Thread{
             String result ="";
             String line = "";
             System.out.println("bytearray");
-            System.out.println(getByte(inputStream).length);
+            //System.out.println(bytesToHex(getByte(inputStream)));
+
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            while ((bytesRead = inputStream.read(buffer)) != -1)
+            {
+                output.write(buffer, 0, bytesRead);
+                //System.out.println("output: "+bytesToHex(output.toByteArray()));
+                new TextAnalysis(bytesToHex(output.toByteArray()));
+            }
+
+            /*
             while((line=reader.readLine()) != null){
                 result += line + " ";
                 System.out.println("Hex: "+stringToHex(line) );
@@ -75,7 +88,7 @@ public class ServerWorker extends Thread{
                 //DatabaseHandler.insertIntoDatabase("Komunikacija", "ID_Postaje, Sporocilo, Datum_Cas",data);
                 //controller.addListItem("C:\n"+line);                      //"C:\n" v ListView doda oznako da je sporočilo od clienta
             }
-
+*/
 
         }catch(IOException e){
             System.out.println("Catch Exception handleClientSocket(): "+e);
@@ -172,69 +185,23 @@ public class ServerWorker extends Thread{
         return builder.toString();
         }
 
-    public void checkLongText(String text){
-        String CHNK = "2343484E4B";  //2343484E4B = "#CHNK" v hex
-        String checkCHNK = text.substring(0, 10);
-        String checkCount = text.substring(10,12);
-        System.out.println("CheckLongText");
-        System.out.println(longTextCount);
 
-        if (checkCHNK.equals(CHNK) && checkCount.equals("00") && longTextCount==1){
-            longTextCount++;
-            longText=text;
-        }else if(checkCHNK.equals(CHNK) && checkCount.equals("01")&& longTextCount==2){
-            longTextCount++;
-            longText+=text;
-        }
-        else if(checkCHNK.equals(CHNK) && checkCount.equals("02")&& longTextCount==3){
-            longTextCount++;
-            longText+=text;
-        }
-        else if(checkCHNK.equals(CHNK) && checkCount.equals("03")&& longTextCount==4){
-            longTextCount++;
-            longText+=text;
-        }
-        else if(checkCHNK.equals(CHNK) && checkCount.equals("04")&& longTextCount==5){
-            longTextCount=0;
-            longText+=text;
-            new TextAnalysis(longText);
-        }
-    }
 
-    public byte [] getByte(InputStream is){
-        try{
-            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            int nRead;
-            byte[] data = new byte[1024];
-            while ((nRead = is.read(data, 0, data.length)) != -1) {
-                buffer.write(data, 0, nRead);
-            }
-
-            buffer.flush();
-            byte[] byteArray = buffer.toByteArray();
-
-            return byteArray;
-        }catch(Exception e){
-            return null;
-        }
-
-    }
-
-    //pretvori hex string to ascii string
-    public static String hexToString(String hex){
-        System.out.println("ServerWorker.hexToString()");
-        StringBuilder output = new StringBuilder();
-        for (int i = 0; i < hex.length(); i+=2) {
-            String str = hex.substring(i, i+2);
-            output.append((char)Integer.parseInt(str, 16));
-        }
-        return output.toString();
-    }
 
     public static String getCurrentTime(){
         SimpleDateFormat formatter= new SimpleDateFormat("dd/MM/yyyy HH:mm:ss z");
         Date date = new Date(System.currentTimeMillis());
         System.out.println("Right now "+formatter.format(date));
         return formatter.format(date);
+    }
+
+    public static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for (int j = 0; j < bytes.length; j++) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = HEX_ARRAY[v >>> 4];
+            hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
+        }
+        return new String(hexChars);
     }
 }
