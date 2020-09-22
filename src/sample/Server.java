@@ -23,14 +23,17 @@ public class Server extends Thread{
 
     @Override
     public void run(){
+        System.out.println("Server.run()");
         try {
             ServerSocket serverSocket = new ServerSocket(serverPort);
+            System.out.println(serverSocket);
             while(true){
+                System.out.println("2!!");
                 Socket clientSocket = serverSocket.accept();
                 ServerWorker worker = new ServerWorker(this, clientSocket);
                 workerList.add(worker);
                 worker.start();
-                System.out.println("??");
+                System.out.println("2??");
             }
         } catch (IOException ex) {
             System.out.println(ex);
